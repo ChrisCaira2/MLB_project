@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import RandomGame from './randomGame';
 import ThreeDot from './ThreeDot';
+import GuessDate from './guessDate';
 
 function App() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -156,6 +157,7 @@ function App() {
                         <ul id="menu">
                             <li><Link to="/" onClick={handleMenuClick}>Player Stats</Link></li>
                             <li><Link to="/random-game" onClick={handleMenuClick}>Random Game</Link></li>
+                            <li><Link to="/guess-date" onClick={handleMenuClick}>Guess Date</Link></li>
                         </ul>
                     </div>
                 </nav>
@@ -172,7 +174,7 @@ function App() {
                                         onKeyDown={handleKeyDown}
                                         onFocus={() => setShowSuggestions(true)}
                                         placeholder="Search for a player..."
-                                        className="search-input."
+                                        className="search-input"
                                     />
                                     {showSuggestions && suggestions.length > 0 && (
                                         <div className="suggestions-dropdown" ref={suggestionsRef}>
@@ -213,6 +215,7 @@ function App() {
                                                         <p>OPS: {stats.ops}</p>
                                                     </div>
                                                     <div className="stats-row">
+                                                        <p>Games Played: {stats.games_played}</p>
                                                         <p>Doubles: {stats.doubles}</p>
                                                         <p>Triples: {stats.triples}</p>
                                                         <p>Home Runs: {stats.home_runs}</p>
@@ -239,6 +242,7 @@ function App() {
                         </>
                     } />
                     <Route path="/random-game" element={<RandomGame />} />
+                    <Route path="/guess-date" element={<GuessDate />} />
                 </Routes>
             </div>
         </Router>

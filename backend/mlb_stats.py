@@ -70,6 +70,7 @@ def get_player_stats():
                         'team': search_results[0].get('currentTeam', {}).get('name', 'Unknown'),
                         'team_logo': team_logo,
                         'type': 'hitter',
+                        'games_played': stat['stats'].get('gamesPlayed', 0),
                         'batting_avg': stat['stats'].get('avg', 'N/A'),
                         'obp': stat['stats'].get('obp', 'N/A'),
                         'slg': stat['stats'].get('slg', 'N/A'),
