@@ -44,7 +44,7 @@ html {
     display: block;
     /* You can also use relative/absolute here if you want to stay on the top */
     position: fixed;
-    top: 10px;
+    top: 20px;
     left: 10px;
 
     z-index: 1;
@@ -89,7 +89,7 @@ html {
 #menuToggle span {
     display: block;
     width: 33px;
-    height: 4px;
+    height: 5px;
     margin-bottom: 5px;
     position: relative;
 
@@ -147,12 +147,12 @@ html {
     max-width: 400px;
     width: 100vw;
     max-height: 100vh;
-    margin: -100px 0 0 -50px;
-    padding: 50px;
+    margin: -100px 0 0 -70px;
+    padding: 40px;
     padding-top: 125px;
     box-sizing: border-box;
     overflow-y: auto;
-    background: #ededed;
+    background: #edededbb;
     list-style-type: none;
     -webkit-font-smoothing: antialiased;
     /* to stop flickering of text in safari */
@@ -505,4 +505,148 @@ h1 {
     color: #e67e22;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+.icons {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    /* Move icons off the right side of the screen a little */
+    display: flex;
+    gap: 15px;
+    /* Increase gap between icons */
+}
+
+.icon {
+    font-size: 32px;
+    /* Make icons bigger */
+    color: #e67e22;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #d35400;
+}
+
+.info-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c3e50;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 80%;
+    max-width: 400px;
+    color: #ecf0f1;
+    text-align: center;
+}
+
+.info-content h2 {
+    margin-top: 0;
+    color: #e67e22;
+}
+
+.info-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.info-content ul li {
+    margin: 10px 0;
+}
+
+.color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.color-box.correct {
+    background-color: #20a457;
+}
+
+.color-box.very-close {
+    background-color: #93dc26;
+}
+
+.color-box.close {
+    background-color: #ffd21f;
+}
+
+.color-box.incorrect {
+    background-color: #e74c3c;
+}
+
+.close-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: #d35400;
+}
+
+.stats-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c3e50;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 80%;
+    max-width: 600px;
+    color: #ecf0f1;
+    text-align: center;
+}
+
+.stats-content h2 {
+    margin-top: 0;
+    color: #e67e22;
+}
+
+.bar-chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar-fill {
+    width: 40px;
+    background-color: #e67e22;
+    transition: height 0.3s ease;
+}
+
+.bar-label {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ecf0f1;
+}
+
+.bar-value {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #ecf0f1;
 }

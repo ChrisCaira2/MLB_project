@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import ThreeDot from './ThreeDot';
+import { FaChartBar, FaInfoCircle } from 'react-icons/fa';
 
 function GuessDate() {
     const [gameData, setGameData] = useState(null);
@@ -11,6 +12,16 @@ function GuessDate() {
     const [guess, setGuess] = useState({ month: '', day: '', year: '' });
     const [gameDate, setGameDate] = useState(null);
     const [message, setMessage] = useState('');
+    const [showInfo, setShowInfo] = useState(false);
+    const [showStats, setShowStats] = useState(false);
+    const [stats, setStats] = useState({
+        wins: 0,
+        losses: 0,
+        streak: 0,
+        totalGuesses: 0,
+        gamesPlayed: 0,
+        guessesPerWin: []
+    });
     const bottomRef = useRef(null);
 
     useEffect(() => {
@@ -79,15 +90,20 @@ function GuessDate() {
 
     const handleGuessSubmit = (e) => {
         e.preventDefault();
-        if (guesses.length >= 5) return;
+        if (guesses.length >= 5) {
+            updateStats(false);
+            return;
+        }
 
         const newGuess = `${guess.month}-${guess.day}-${guess.year}`;
         setGuesses((prevGuesses) => [...prevGuesses, newGuess]);
 
         if (newGuess === gameDate) {
             setMessage('Congratulations! You guessed the correct date!');
+            updateStats(true);
         } else if (guesses.length === 4) {
             setMessage(`Sorry, you've used all your tries. The correct date was ${gameDate}.`);
+            updateStats(false);
         }
 
         // Scroll to the bottom
@@ -109,9 +125,53 @@ function GuessDate() {
         return 'incorrect';
     };
 
+    const handleInfoClick = () => {
+        setShowInfo(true);
+    };
+
+    const handleStatsClick = () => {
+        setShowStats(true);
+    };
+
+    const handleCloseInfo = () => {
+        setShowInfo(false);
+    };
+
+    const handleCloseStats = () => {
+        setShowStats(false);
+    };
+
+    const updateStats = (isWin) => {
+        setStats((prevStats) => {
+            const newStats = { ...prevStats };
+            newStats.gamesPlayed += 1;
+            newStats.totalGuesses += guesses.length + 1;
+            if (isWin) {
+                newStats.wins += 1;
+                newStats.streak += 1;
+                newStats.guessesPerWin.push(guesses.length + 1);
+            } else {
+                newStats.losses += 1;
+                newStats.streak = 0;
+            }
+            return newStats;
+        });
+    };
+
+    const statsData = [
+        { label: 'Wins', value: stats.wins },
+        { label: 'Losses', value: stats.losses },
+        { label: 'Streak', value: stats.streak },
+        { label: 'Avg Guesses/Win', value: stats.wins > 0 ? (stats.totalGuesses / stats.wins).toFixed(2) : 0 }
+    ];
+
     return (
         <div>
             <h1>Guess the Date: Random Box Score Game</h1>
+            <div className="icons">
+                <FaChartBar className="icon" onClick={handleStatsClick} />
+                <FaInfoCircle className="icon" onClick={handleInfoClick} />
+            </div>
             <button onClick={fetchRandomGame} className="search-button">Fetch Random Game</button>
             {loading && <ThreeDot variant="pulsate" color="#e28b3b" size="small" text="" textColor="" />}
             {error && <p className="error">{error}</p>}
@@ -174,8 +234,45 @@ function GuessDate() {
                         {message && <p className="message">{message}</p>}
                         <div ref={bottomRef}></div>
                     </div>
-
                 </>
+            )}
+            {showInfo && (
+                <div className="info-popup">
+                    <div className="info-content">
+                        <h2>How to Play</h2>
+                        <ul>
+                            <li>Click "Fetch Random Game" to get a random box score.</li>
+                            <li>Enter your guess for the date in the format MM-DD-YYYY.</li>
+                            <li>Submit your guess and see if you are correct!</li>
+                            <li>You have 5 attempts to guess the correct date.</li>
+                        </ul>
+                        <h3>Color Codes:</h3>
+                        <ul>
+                            <li><span className="color-box correct"></span> Correct</li>
+                            <li><span className="color-box very-close"></span> Very Close (within 3 days)</li>
+                            <li><span className="color-box close"></span> Close (within 7 days)</li>
+                            <li><span className="color-box incorrect"></span> Incorrect</li>
+                        </ul>
+                        <button onClick={handleCloseInfo} className="close-button">Close</button>
+                    </div>
+                </div>
+            )}
+            {showStats && (
+                <div className="stats-popup">
+                    <div className="stats-content">
+                        <h2>Your Stats</h2>
+                        <div className="bar-chart">
+                            {statsData.map((data, index) => (
+                                <div key={index} className="bar">
+                                    <div className="bar-fill" style={{ height: `${data.value * 10}px` }}></div>
+                                    <span className="bar-label">{data.label}</span>
+                                    <span className="bar-value">{data.value}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <button onClick={handleCloseStats} className="close-button">Close</button>
+                    </div>
+                </div>
             )}
         </div>
     );
